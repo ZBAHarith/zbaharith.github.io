@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'self'; base-uri 'none'; form-action 'none';">
+  <title>Community Directory</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0f0f0f; --surface: #161616; --border: #2a2a2a; --muted: #555;
+      --text: #c8c8c8; --heading: #f0f0f0; --accent: #e8d5a3;
+      --link: #a8c4d4; --link-hov: #cce4f0;
+      --font: ui-monospace, "Cascadia Code", "Fira Mono", "Consolas", monospace;
+    }
+    html { font-size: 16px; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font); line-height: 1.6; min-height: 100vh; padding: 0 1.5rem; }
+    .page { max-width: 900px; margin: 0 auto; padding: 4rem 0 6rem; }
+    header { border-bottom: 1px solid var(--border); padding-bottom: 2.5rem; margin-bottom: 3rem; }
+    .site-label { font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.25rem; }
+    h1 { font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 400; color: var(--heading); letter-spacing: -0.02em; line-height: 1.15; }
+    h1 span { color: var(--accent); }
+    .subtitle { margin-top: 0.9rem; font-size: 0.82rem; color: var(--muted); letter-spacing: 0.04em; }
+    .section-title { font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+    .columns { display: grid; grid-template-columns: 1fr 1fr; gap: 0 3rem; }
+    @media (max-width: 560px) { .columns { grid-template-columns: 1fr; } }
+    .entry-list { list-style: none; }
+    .entry-list li { display: flex; align-items: baseline; gap: 0.6rem; padding: 0.45rem 0; border-bottom: 1px solid var(--border); font-size: 0.875rem; }
+    .entry-list li:last-child { border-bottom: none; }
+    .entry-list li::before { content: "›"; color: var(--muted); flex-shrink: 0; font-size: 0.75rem; }
+    .entry-list a { color: var(--link); text-decoration: none; word-break: break-all; transition: color 0.15s; }
+    .entry-list a:hover, .entry-list a:focus { color: var(--link-hov); text-decoration: underline; text-underline-offset: 3px; outline: none; }
+    .plain { color: var(--text); }
+    .section { margin-bottom: 3.5rem; }
+    /* Charity box */
+    .charity-box { border: 1px solid var(--border); background: var(--surface); border-radius: 4px; padding: 1.25rem 1.5rem; margin-bottom: 3.5rem; }
+    .charity-list { list-style: none; }
+    .charity-list li { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.5rem 0; border-bottom: 1px solid var(--border); font-size: 0.875rem; }
+    .charity-list li:last-child { border-bottom: none; padding-bottom: 0; }
+    .charity-name { color: var(--text); }
+    .charity-link { flex-shrink: 0; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); text-decoration: none; border: 1px solid var(--accent); padding: 0.15rem 0.5rem; border-radius: 2px; opacity: 0.75; transition: opacity 0.15s; }
+    .charity-link:hover, .charity-link:focus { opacity: 1; outline: none; }
+    .charity-loading { font-size: 0.8rem; color: var(--muted); }
+    footer { margin-top: 5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: 0.65rem; letter-spacing: 0.1em; color: var(--muted); text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <p class="site-label">Community Directory</p>
+      <h1>The <span>Commons</span></h1>
+      <p class="subtitle">A curated list of community spaces &amp; resources.</p>
+    </header>
+
+    <div class="charity-box">
+      <h2 class="section-title">Charities</h2>
+      <ul class="charity-list" id="charity-list">
+        <li><span class="charity-loading">Loading…</span></li>
+      </ul>
+    </div>
+
+    <section class="section">
+      <h2 class="section-title">Sites &amp; Communities</h2>
+      <div class="columns">
+        <div class="column">
+          <ul class="entry-list">
+            <li><a href="https://example.org" rel="noopener noreferrer nofollow">Example Community</a></li>
+            <li><a href="https://example.org" rel="noopener noreferrer nofollow">Another Space</a></li>
+            <li><a href="https://example.org" rel="noopener noreferrer nofollow">Resource Hub</a></li>
+            <li><a href="https://example.org" rel="noopener noreferrer nofollow">Open Forum</a></li>
+            <li><a href="https://example.org" rel="noopener noreferrer nofollow">Digital Commons</a></li>
+            <li><span class="plain">Unlisted Group</span></li>
+          </ul>
+        </div>
+        <div class="column">
+          <ul class="entry-list">
+            <li><a href="https://example.org" rel="noopener noreferrer nofollow">The Archive</a></li>
+            <li><a href="https://example.org" rel="noopener noreferrer nofollow">Network Node</a></li>
+            <li><a href="https://example.org" rel="noopener noreferrer nofollow">Collective Feed</a></li>
+            <li><a href="https://example.org" rel="noopener noreferrer nofollow">Study Circle</a></li>
+            <li><a href="https://example.org" rel="noopener noreferrer nofollow">Workshop Space</a></li>
+            <li><a href="https://example.org" rel="noopener noreferrer nofollow">Mutual Aid Net</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer>no tracking &nbsp;·&nbsp; no analytics &nbsp;·&nbsp; no cookies</footer>
+  </div>
+
+  <script>
+    (function () {
+      fetch('charity.txt', { credentials: 'omit', referrerPolicy: 'no-referrer' })
+        .then(function (r) { return r.text(); })
+        .then(function (text) {
+          var list = document.getElementById('charity-list');
+          var lines = text.split('\n').map(function (l) { return l.trim(); }).filter(Boolean);
+          if (lines.length === 0) {
+            list.innerHTML = '<li><span class="charity-loading">No entries found.</span></li>';
+            return;
+          }
+          list.innerHTML = lines.map(function (line) {
+            var parts = line.split('|');
+            var name = parts[0] ? parts[0].trim() : '';
+            var url  = parts[1] ? parts[1].trim() : '';
+            if (!name) return '';
+            var linkHTML = url
+              ? '<a class="charity-link" href="' + url + '" rel="noopener noreferrer nofollow">Link</a>'
+              : '';
+            return '<li><span class="charity-name">' + name + '</span>' + linkHTML + '</li>';
+          }).join('');
+        })
+        .catch(function () {
+          document.getElementById('charity-list').innerHTML =
+            '<li><span class="charity-loading">Could not load list.</span></li>';
+        });
+    })();
+  </script>
+</body>
+</html>
