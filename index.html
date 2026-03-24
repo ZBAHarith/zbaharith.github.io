@@ -34,7 +34,6 @@
     .entry-list a:hover, .entry-list a:focus { color: var(--link-hov); text-decoration: underline; text-underline-offset: 3px; outline: none; }
     .plain { color: var(--text); }
     .section { margin-bottom: 3.5rem; }
-    /* Charity box */
     .charity-box { border: 1px solid var(--border); background: var(--surface); border-radius: 4px; padding: 1.25rem 1.5rem; margin-bottom: 3.5rem; }
     .charity-list { list-style: none; }
     .charity-list li { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.5rem 0; border-bottom: 1px solid var(--border); font-size: 0.875rem; }
@@ -42,7 +41,6 @@
     .charity-name { color: var(--text); }
     .charity-link { flex-shrink: 0; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); text-decoration: none; border: 1px solid var(--accent); padding: 0.15rem 0.5rem; border-radius: 2px; opacity: 0.75; transition: opacity 0.15s; }
     .charity-link:hover, .charity-link:focus { opacity: 1; outline: none; }
-    .charity-loading { font-size: 0.8rem; color: var(--muted); }
     footer { margin-top: 5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: 0.65rem; letter-spacing: 0.1em; color: var(--muted); text-align: center; }
   </style>
 </head>
@@ -57,7 +55,7 @@
     <div class="charity-box">
       <h2 class="section-title">Charities</h2>
       <ul class="charity-list" id="charity-list">
-        <li><span class="charity-loading">Loading…</span></li>
+        <li><span style="color:var(--muted);font-size:.8rem">Loading…</span></li>
       </ul>
     </div>
 
@@ -91,32 +89,33 @@
   </div>
 
   <script>
-    (function () {
-      fetch('charity.txt', { credentials: 'omit', referrerPolicy: 'no-referrer' })
-        .then(function (r) { return r.text(); })
-        .then(function (text) {
-          var list = document.getElementById('charity-list');
-          var lines = text.split('\n').map(function (l) { return l.trim(); }).filter(Boolean);
-          if (lines.length === 0) {
-            list.innerHTML = '<li><span class="charity-loading">No entries found.</span></li>';
-            return;
-          }
-          list.innerHTML = lines.map(function (line) {
-            var parts = line.split('|');
-            var name = parts[0] ? parts[0].trim() : '';
-            var url  = parts[1] ? parts[1].trim() : '';
-            if (!name) return '';
-            var linkHTML = url
-              ? '<a class="charity-link" href="' + url + '" rel="noopener noreferrer nofollow">Link</a>'
-              : '';
-            return '<li><span class="charity-name">' + name + '</span>' + linkHTML + '</li>';
-          }).join('');
-        })
-        .catch(function () {
-          document.getElementById('charity-list').innerHTML =
-            '<li><span class="charity-loading">Could not load list.</span></li>';
-        });
-    })();
+    fetch('charity.txt', { credentials: 'omit', referrerPolicy: 'no-referrer' })
+      .then(function(r) {
+        if (!r.ok) throw new Error('File not found');
+        return r.text();
+      })
+      .then(function(text) {
+        var list = document.getElementById('charity-list');
+        var lines = text.split('\n').map(function(l) { return l.trim(); }).filter(Boolean);
+        if (lines.length === 0) {
+          list.innerHTML = '<li><span style="color:var(--muted);font-size:.8rem">No entries found.</span></li>';
+          return;
+        }
+        list.innerHTML = lines.map(function(line) {
+          var parts = line.split('|');
+          var name = parts[0] ? parts[0].trim() : '';
+          var url  = parts[1] ? parts[1].trim() : '';
+          if (!name) return '';
+          var linkHTML = url
+            ? '<a class="charity-link" href="' + url + '" rel="noopener noreferrer nofollow">Link</a>'
+            : '';
+          return '<li><span class="charity-name">' + name + '</span>' + linkHTML + '</li>';
+        }).join('');
+      })
+      .catch(function() {
+        document.getElementById('charity-list').innerHTML =
+          '<li><span style="color:var(--muted);font-size:.8rem">Could not load charity.txt</span></li>';
+      });
   </script>
 </body>
 </html>
